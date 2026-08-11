@@ -1,0 +1,37 @@
+/* Generated from Figma Variables. First mode = :root default.
+   FLOAT tokens are unitless — multiply by 1px in calc() where a length is needed. */
+
+:root {
+  --backgrounds-light: rgb(240,240,255); /* @kind color */
+  --base-black: rgb(0,0,0); /* @kind color */
+  --base-grey-light: rgb(170,170,170); /* @kind color */
+  --base-grey-medium: rgb(112,112,112); /* @kind color */
+  --base-white: rgb(255,255,255); /* @kind color */
+  --basics-black: rgb(0,0,0); /* @kind color */
+  --basics-grey-light: rgb(177,177,191); /* @kind color */
+  --basics-grey-medium-2: rgb(118,118,128); /* @kind color */
+  --basics-grey-medium: rgb(112,112,112); /* @kind color */
+  --basics-white: rgb(255,255,255); /* @kind color */
+  --gray-700: rgb(65,65,69); /* @kind color */
+  --legacy-blue: rgb(102,200,255); /* @kind color */
+  --legacy-purple: rgb(191,107,255); /* @kind color */
+  --neutrals-black: rgb(0,0,0); /* @kind color */
+  --neutrals-dark-grey: rgb(64,66,71); /* @kind color */
+  --neutrals-dark: rgb(48,48,51); /* @kind color */
+  --neutrals-light-accent: rgb(229,229,244); /* @kind color */
+  --neutrals-light-grey: rgb(187,190,199); /* @kind color */
+  --neutrals-light: rgb(240,240,255); /* @kind color */
+  --neutrals-medium-grey: rgb(129,132,140); /* @kind color */
+  --neutrals-off-black: rgb(24,24,26); /* @kind color */
+  --neutrals-off-white: rgb(228,232,242); /* @kind color */
+  --neutrals-white: rgb(255,255,255); /* @kind color */
+  --primary-green: rgb(106,244,183); /* @kind color */
+  --secondary-purple: rgb(144,77,255); /* @kind color */
+  --semantic-danger-red: rgb(229,0,0); /* @kind color */
+  --shades-primary-dark: rgb(52,173,120); /* @kind color */
+  --system-warning-error-red: rgb(229,0,0); /* @kind color */
+  --tertiary-purple: rgb(61,20,122); /* @kind color */
+  --transparents-black-50: rgba(0,0,0,0.5); /* @kind color */
+  --transparents-secondary-30: rgba(144,77,255,0.3); /* @kind color */
+  --transparents-white-50: rgba(255,255,255,0.5); /* @kind color */
+}

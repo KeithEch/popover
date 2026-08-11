@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@600&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #5C6166; }
+  a { color: rgb(102,200,255); text-decoration: none; }
+  a:hover { color: rgb(160,220,255); }
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:32px;padding:48px 24px 64px;box-sizing:border-box;background:#5C6166;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="display:flex;gap:4px;padding:4px;border-radius:6px;background:rgb(24,24,26);box-shadow:inset 0 0 0 1px rgb(48,48,51)">
+      <button type="button" onClick="{{ showAsset }}" style="{{ tabAssetStyle }}">Asset version</button>
+      <button type="button" onClick="{{ showColor }}" style="{{ tabColorStyle }}">Color version</button>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center">
+      <sc-for list="{{ stateChips }}" as="chip" hint-placeholder-count="3">
+        <button type="button" onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="width:692px;border-radius:8px;background:rgb(24,24,26);display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 24px 64px rgba(0,0,0,0.55)">
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding:16px 32px 24px 32px;box-sizing:border-box;align-self:stretch">
+      <div style="height:32px;display:flex;flex-direction:row;justify-content:space-between;align-items:center;flex-shrink:0;align-self:stretch">
+        <button type="button" onClick="{{ goBack }}" style="{{ backStyle }}">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+            <path d="M10.5 2.5 L5 8 L10.5 13.5" stroke="{{ backArrowColor }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span style="font-family:Inter,sans-serif;font-weight:600;font-size:14px;line-height:16px;letter-spacing:0.01em;color:rgb(255,255,255);white-space:nowrap">Back</span>
+        </button>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;cursor:pointer">
+          <path d="M5 5 L19 19 M19 5 L5 19" stroke="rgb(255,255,255)" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;padding:0 0 8px 0;justify-content:center;align-items:flex-start;box-sizing:border-box;align-self:stretch">
+        <span style="font-family:'General Sans',Inter,sans-serif;font-weight:600;font-size:24px;line-height:32px;color:rgb(250,248,248);align-self:stretch">{{ title }}</span>
+
+        <div style="height:28px;display:flex;flex-direction:row;align-items:center;flex-shrink:0;{{ tabRowGap }}">
+          <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="2">
+            <button type="button" onClick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}</button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ subline }}" hint-placeholder-val="{{ true }}">
+          <span style="font-family:Inter,sans-serif;font-weight:400;font-size:14px;line-height:16px;color:rgb(187,190,199);align-self:stretch">{{ subline }}</span>
+        </sc-if>
+
+        <sc-if value="{{ showSearch }}" hint-placeholder-val="{{ true }}">
+          <div style="width:382px;height:32px;border-radius:4px;background:rgb(0,0,0);box-shadow:inset 0 0 0 1px rgb(64,66,71);display:flex;flex-direction:row;gap:8px;padding:8px;align-items:center;box-sizing:border-box;flex-shrink:0">
+            <span style="font-family:Inter,sans-serif;font-weight:400;font-style:italic;font-size:12px;line-height:16px;color:rgb(118,118,128);white-space:nowrap">Filter and search</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:row;padding:0 32px;justify-content:center;align-items:flex-start;box-sizing:border-box;align-self:stretch;{{ bodyHeight }}">
+
+      <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+        <div style="width:636px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgb(255,255,255) transparent;display:flex;flex-direction:column;gap:16px;align-items:flex-start;flex-shrink:0;align-self:stretch;padding-right:24px;box-sizing:content-box;margin-right:-24px">
+          <sc-for list="{{ rows }}" as="row" hint-placeholder-count="5">
+            <div onClick="{{ row.onClick }}" style="{{ row.style }}">
+              <div style="{{ row.thumbStyle }}"></div>
+              <span style="flex:1;font-family:Inter,sans-serif;font-weight:500;font-size:16px;line-height:16px;color:rgb(187,190,199);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ row.name }}</span>
+              <span style="width:140px;flex-shrink:0;font-family:Inter,sans-serif;font-weight:500;font-size:16px;line-height:16px;color:rgb(187,190,199)">{{ row.meta }}</span>
+              <sc-if value="{{ row.isColor }}" hint-placeholder-val="{{ true }}">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="{{ row.trashStyle }}">
+                  <path d="M2.5 4h11M6 4V2.5h4V4M4 4l.8 9.5h6.4L12 4" stroke="rgb(255,255,255)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </sc-if>
+              <sc-if value="{{ row.isAsset }}" hint-placeholder-val="{{ true }}">
+                <div style="width:9px;height:16px;overflow:hidden;display:flex;flex-direction:row;gap:2px;justify-content:center;align-items:center;flex-wrap:wrap;flex-shrink:0">
+                  <div style="width:3px;height:3px;border-radius:8px;background:rgba(255,255,255,0.5)"></div>
+                  <div style="width:3px;height:3px;border-radius:8px;background:rgba(255,255,255,0.5)"></div>
+                  <div style="width:3px;height:3px;border-radius:8px;background:rgba(255,255,255,0.5)"></div>
+                  <div style="width:3px;height:3px;border-radius:8px;background:rgba(255,255,255,0.5)"></div>
+                  <div style="width:3px;height:3px;border-radius:8px;background:rgba(255,255,255,0.5)"></div>
+                  <div style="width:3px;height:3px;border-radius:8px;background:rgba(255,255,255,0.5)"></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;border-radius:8px;background:rgb(48,48,51);outline:2px dashed rgb(129,132,140);outline-offset:-2px;display:flex;flex-direction:column;gap:16px;padding:24px 20px;justify-content:center;align-items:center;box-sizing:border-box;align-self:stretch;cursor:pointer">
+          <div style="width:94px;height:94px;display:flex;padding:16px;box-sizing:border-box;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="62" height="62" viewBox="0 0 62 62" fill="none">
+              <rect x="4" y="10" width="54" height="42" rx="4" stroke="rgb(255,255,255)" stroke-width="2.5"></rect>
+              <circle cx="19" cy="24" r="4.5" stroke="rgb(255,255,255)" stroke-width="2.5"></circle>
+              <path d="M6 44 L23 30 L36 41 L45 34 L56 43" stroke="rgb(255,255,255)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <span style="font-family:Inter,sans-serif;font-weight:400;font-size:14px;line-height:20px;letter-spacing:0.01em;text-align:center;color:rgb(228,232,242);align-self:stretch">Click to upload PNG, JPEG, or drag and drop here</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPicker }}" hint-placeholder-val="{{ true }}">
+        <div style="width:454px;display:flex;flex-direction:column;gap:24px;align-items:center;flex-shrink:0">
+          <div style="width:360px;height:214px;display:flex;flex-direction:row;gap:16px;justify-content:center;align-items:flex-start;flex-shrink:0">
+            <div style="position:relative;width:320px;height:214px;overflow:hidden;border-radius:4px;box-shadow:inset 0 0 0 1px rgb(0,0,0);flex-shrink:0">
+              <img src="./assets/121a43283fa65368.png" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;border-radius:8px" />
+              <div style="position:absolute;left:278px;top:30px;width:16px;height:16px;border-radius:14.193548202514648px;box-shadow:inset 0 0 0 1.774px rgb(250,248,248)"></div>
+            </div>
+            <div style="position:relative;width:24px;height:214px;border-radius:4px;flex-shrink:0;background:linear-gradient(180deg, rgb(255,0,0) 0%, rgb(188,0,23) 13.78%, rgb(131,0,255) 25.6%, rgb(5,0,255) 38.23%, rgb(0,224,255) 54.13%, rgb(0,255,10) 70.43%, rgb(250,255,0) 85.5%, rgb(255,0,0) 100%)">
+              <div style="position:absolute;left:-4px;top:-11px;width:32px;height:8px;border-radius:4px;background:rgb(255,255,255)"></div>
+            </div>
+          </div>
+          <div style="width:454px;height:32px;display:flex;flex-direction:row;gap:16px;align-items:flex-start;flex-shrink:0">
+            <div style="flex:1;height:32px;border-radius:4px;background:rgb(0,0,0);box-shadow:inset 0 0 0 1px rgb(64,66,71);display:flex;gap:8px;padding:8px;align-items:center;box-sizing:border-box">
+              <span style="font-family:Inter,sans-serif;font-weight:400;font-style:italic;font-size:12px;line-height:16px;color:rgb(118,118,128);white-space:nowrap">Name your color - optional</span>
+            </div>
+            <div style="flex:1;height:32px;border-radius:4px;background:rgb(0,0,0);box-shadow:inset 0 0 0 1px rgb(64,66,71);display:flex;gap:8px;padding:8px;align-items:center;box-sizing:border-box">
+              <span style="font-family:Inter,sans-serif;font-weight:400;font-style:italic;font-size:12px;line-height:16px;color:rgb(118,118,128);white-space:nowrap">#ff0000</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="display:flex;flex-direction:row;padding:48px 32px 32px 32px;justify-content:space-between;align-items:center;box-sizing:border-box;align-self:stretch">
+      <sc-if value="{{ leftButton }}" hint-placeholder-val="{{ true }}">
+        <button type="button" style="{{ leftButton.style }}"><span style="{{ leftButton.labelStyle }}">{{ leftButton.label }}</span></button>
+      </sc-if>
+      <div style="display:flex;flex-direction:row;gap:16px;justify-content:flex-end;align-items:center;margin-left:auto">
+        <sc-for list="{{ rightButtons }}" as="btn" hint-placeholder-count="3">
+          <button type="button" onClick="{{ btn.onClick }}" style="{{ btn.style }}">
+            <span style="{{ btn.labelStyle }}">{{ btn.label }}</span>
+            <sc-if value="{{ btn.plus }}" hint-placeholder-val="{{ true }}">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+                <path d="M8 3v10M3 8h10" stroke="{{ btn.plusColor }}" stroke-width="1.6" stroke-linecap="round"></path>
+              </svg>
+            </sc-if>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;rgb(191,107,255)&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;rgb(191,107,255)&quot;,&quot;rgb(102,200,255)&quot;,&quot;rgb(106,244,183)&quot;,&quot;rgb(250,248,248)&quot;]},&quot;startVersion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Asset&quot;,&quot;options&quot;:[&quot;Asset&quot;,&quot;Color&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+const ASSETS = [
+  { name: "CC-logo-1.jpg", meta: "100\u00d7100px", img: "./assets/d1ebce84b61c4484.png" },
+  { name: "CC-logo-trans-1.png", meta: "100\u00d7100px", img: "./assets/d1ebce84b61c4484.png" },
+  { name: "CC-logo-2.jpg", meta: "500\u00d7500px", img: "./assets/d1ebce84b61c4484.png" },
+  { name: "Rooster-5685.jpg", meta: "480\u00d7480px", img: "./assets/6cb04604a007a3a1.jpg" },
+  { name: "KeyartSlice_chicken-5.jpg", meta: "480\u00d7480px", img: "./assets/f57cee3cd95a89b5.png" },
+  { name: "Coop-banner-wide.png", meta: "1200\u00d7630px", img: "./assets/f57cee3cd95a89b5.png" },
+  { name: "Feather-icon-set-3.png", meta: "64\u00d764px", img: "./assets/d1ebce84b61c4484.png" },
+  { name: "Rooster-hero-alt.jpg", meta: "1080\u00d71080px", img: "./assets/6cb04604a007a3a1.jpg" },
+  { name: "Chicken-chaos-badge.png", meta: "256\u00d7256px", img: "./assets/f57cee3cd95a89b5.png" },
+];
+
+const PRESETS = [
+  { name: "Primary button", meta: "#FFFFFF", swatch: "rgb(255,255,255)" },
+  { name: "Secondary accents", meta: "#BC8383", swatch: "rgb(188,131,131)" },
+  { name: "Neutral", meta: "#83BC8C", swatch: "rgb(131,188,140)" },
+  { name: "Neutral Contrast", meta: "#3B6D43", swatch: "rgb(59,109,67)" },
+  { name: "Longer name of_img file.jpg", meta: "#555555", swatch: "rgb(85,85,85)" },
+  { name: "Surface base", meta: "#18181A", swatch: "rgb(24,24,26)" },
+  { name: "Accent purple", meta: "#BF6BFF", swatch: "rgb(191,107,255)" },
+  { name: "Success mint", meta: "#6AF4B7", swatch: "rgb(106,244,183)" },
+  { name: "Danger red", meta: "#E50000", swatch: "rgb(229,0,0)" },
+];
+
+const CUSTOM = [
+  { name: "Off white", meta: "#FAF8F8", swatch: "rgb(250,248,248)" },
+  { name: "Rosie red", meta: "#BC8383", swatch: "rgb(188,131,131)" },
+  { name: "bg green", meta: "#83BC8C", swatch: "rgb(131,188,140)" },
+  { name: "Neutral Contrast", meta: "#3B6D43", swatch: "rgb(59,109,67)" },
+  { name: "Longer name of_img file.jpg", meta: "#555555", swatch: "rgb(85,85,85)" },
+];
+
+const FONT = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+
+class Component extends DCLogic {
+  state = { version: null, assetState: "default", colorState: "presets", assetTab: 0, selected: null, hover: null };
+
+  get version() { return this.state.version ?? (this.props.startVersion === "Color" ? "color" : "asset"); }
+  get accent() { return this.props.accent ?? "rgb(191,107,255)"; }
+
+  chip(label, active, onClick) {
+    return {
+      label, onClick,
+      style: "padding:6px 12px;border-radius:5px;border:0;cursor:pointer;font-family:" + FONT +
+        ";font-weight:500;font-size:13px;line-height:16px;background:" + (active ? "rgba(144,77,255,0.3)" : "transparent") +
+        ";color:" + (active ? "rgb(255,255,255)" : "rgb(129,132,140)"),
+    };
+  }
+
+  toggleStyle(active) {
+    return "padding:8px 16px;border-radius:4px;border:0;cursor:pointer;font-family:" + FONT +
+      ";font-weight:500;font-size:14px;line-height:16px;background:" + (active ? "rgb(48,48,51)" : "transparent") +
+      ";color:" + (active ? "rgb(250,248,248)" : "rgb(129,132,140)");
+  }
+
+  btn(kind, label, opts) {
+    const o = opts || {};
+    const base = "min-width:80px;height:32px;border-radius:4px;border:0;display:flex;flex-direction:row;justify-content:center;align-items:center;box-sizing:border-box;padding:8px 16px;gap:" + (o.plus ? "4px" : "8px") + ";cursor:" + (o.disabled ? "default" : "pointer") + ";";
+    let box = "", labelStyle = "font-family:" + FONT + ";font-weight:500;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:16px;";
+    if (kind === "primary") {
+      box = o.disabled ? "background:rgb(118,118,128);" : "background:rgb(106,244,183);";
+      labelStyle += "font-size:16px;color:" + (o.disabled ? "rgb(177,177,191)" : "rgb(61,20,122)") + ";";
+    } else if (kind === "danger") {
+      box = "background:rgba(0,0,0,0.5);box-shadow:inset 0 0 0 1px rgb(229,0,0);";
+      labelStyle += "font-size:14px;color:rgb(255,255,255);";
+    } else {
+      box = o.disabled
+        ? "background:rgba(0,0,0,0.5);box-shadow:inset 0 0 0 2px rgb(64,66,71);"
+        : "background:rgba(0,0,0,0.5);box-shadow:inset 0 0 0 1px rgb(170,170,170);";
+      labelStyle += "font-size:14px;color:" + (o.disabled ? "rgb(129,132,140)" : "rgb(255,255,255)") + ";";
+    }
+    return {
+      label, style: base + box, labelStyle, plus: !!o.plus,
+      plusColor: o.disabled ? "rgb(129,132,140)" : "rgb(255,255,255)",
+      onClick: o.disabled ? undefined : o.onClick,
+    };
+  }
+
+  renderVals() {
+    const v = this.version;
+    const st = v === "asset" ? this.state.assetState : this.state.colorState;
+    const set = (k, val) => () => this.setState({ [k]: val, selected: null });
+
+    const stateChips = v === "asset"
+      ? [this.chip("Default", st === "default", set("assetState", "default")),
+         this.chip("Row selected", st === "selected", () => this.setState({ assetState: "selected", selected: 3 })),
+         this.chip("Add asset", st === "add", set("assetState", "add"))]
+      : [this.chip("Presets", st === "presets", set("colorState", "presets")),
+         this.chip("Custom list", st === "custom", set("colorState", "custom")),
+         this.chip("Custom picker", st === "picker", set("colorState", "picker"))];
+
+    const tabDef = (label, active, onClick) => ({
+      label, onClick,
+      style: "height:28px;padding:8px 8px 4px 8px;border-radius:0;background:transparent;cursor:pointer;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-family:" + FONT +
+        ";font-weight:500;font-size:14px;line-height:16px;white-space:nowrap;color:" + (active ? this.accent : "rgb(187,190,199)") +
+        ";border:0;border-top:2px solid " + (active ? this.accent : "transparent"),
+    });
+
+    const tabs = v === "asset"
+      ? [tabDef("Main library", this.state.assetTab === 0, () => this.setState({ assetTab: 0 })),
+         tabDef("In-game items", this.state.assetTab === 1, () => this.setState({ assetTab: 1 }))]
+      : [tabDef("Presets", st === "presets", () => this.setState({ colorState: "presets", selected: null })),
+         tabDef("Custom", st === "custom" || st === "picker", () => this.setState({ colorState: "custom", selected: null }))];
+
+    const isList = v === "asset" ? st !== "add" : st !== "picker";
+    const data = v === "asset" ? ASSETS : (st === "custom" ? CUSTOM : PRESETS);
+
+    const rows = !isList ? [] : data.map((d, i) => {
+      const sel = this.state.selected === i;
+      const hov = this.state.hover === i;
+      return {
+        name: d.name, meta: d.meta, isColor: v === "color", isAsset: v === "asset",
+        onClick: () => {
+          if (v === "asset") this.setState({ selected: sel ? null : i, assetState: sel ? "default" : "selected" });
+          else this.setState({ selected: i, colorState: "picker" });
+        },
+        onMouseEnter: () => this.setState({ hover: i }),
+        style: "width:636px;height:48px;min-height:48px;display:flex;flex-direction:row;gap:10px;padding:0 8px 0 0;align-items:center;box-sizing:border-box;flex-shrink:0;cursor:pointer;background:" + (sel ? "rgba(144,77,255,0.3)" : "transparent"),
+        thumbStyle: "width:48px;height:48px;flex-shrink:0;overflow:hidden;" + (v === "asset"
+          ? "background:url(" + d.img + ") center / cover no-repeat,#fff;"
+          : "border-radius:8px;background:" + d.swatch + ";"),
+        trashStyle: "flex-shrink:0;cursor:pointer;opacity:" + (sel || hov || i === 4 ? "1" : "0"),
+      };
+    });
+
+    let title = "Creative asset library", subline = null, bodyHeight = "height:304px";
+    if (v === "asset" && st === "add") { title = "Image library"; subline = "Lorem ipsum dolor sit amet, consectetur a adipiscing eoot. Suspendisse blandit sapien egaet suscipit pretium. Nullam interdum, lectus sot amet pretium interdum, purus leo tempor libero."; bodyHeight = "height:344px"; }
+    if (v === "color") {
+      title = "Color library";
+      subline = st === "presets" ? "Click to edit each preset below" : "Name your color so you can reference it later across our suite of applications. Learn More";
+      bodyHeight = st === "presets" ? "height:240px" : (st === "custom" ? "height:176px" : "height:270px");
+    }
+
+    let leftButton = null, rightButtons = [];
+    if (v === "asset") {
+      const selected = st === "selected";
+      if (st !== "add") leftButton = selected ? this.btn("danger", "Delete") : this.btn("secondary", "Delete", { disabled: true });
+      rightButtons = [
+        this.btn("secondary", "Cancel", { onClick: () => this.setState({ assetState: "default", selected: null }) }),
+        this.btn("secondary", "Add asset", { plus: true, disabled: st === "add", onClick: () => this.setState({ assetState: "add", selected: null }) }),
+        this.btn("primary", "Continue", { disabled: !selected }),
+      ];
+    } else if (st === "presets") {
+      leftButton = this.btn("secondary", "Cancel");
+    } else if (st === "custom") {
+      rightButtons = [
+        this.btn("secondary", "Cancel", { onClick: () => this.setState({ colorState: "presets", selected: null }) }),
+        this.btn("secondary", "Add color", { plus: true, onClick: () => this.setState({ colorState: "picker", selected: null }) }),
+        this.btn("primary", "Save"),
+      ];
+    } else {
+      rightButtons = [
+        this.btn("secondary", "Cancel", { onClick: () => this.setState({ colorState: "custom", selected: null }) }),
+        this.btn("primary", "Save"),
+      ];
+    }
+
+    const backVisible = (v === "asset" && st === "add") || (v === "color" && st === "picker");
+    return {
+      stateChips, tabs, rows, title, subline, bodyHeight,
+      isList, isUpload: v === "asset" && st === "add", isPicker: v === "color" && st === "picker",
+      showSearch: v === "asset" && st !== "add",
+      tabRowGap: v === "asset" ? "gap:8px" : "gap:4px",
+      tabAssetStyle: this.toggleStyle(v === "asset"),
+      tabColorStyle: this.toggleStyle(v === "color"),
+      showAsset: () => this.setState({ version: "asset", selected: null, assetState: "default" }),
+      showColor: () => this.setState({ version: "color", selected: null, colorState: "presets" }),
+      backStyle: "width:70px;height:32px;display:flex;flex-direction:row;gap:8px;padding:8px 8px 8px 4px;justify-content:center;align-items:center;box-sizing:border-box;flex-shrink:0;border:0;background:transparent;cursor:pointer;opacity:" + (backVisible ? "1" : "0") + ";pointer-events:" + (backVisible ? "auto" : "none"),
+      backArrowColor: v === "asset" ? "rgb(102,200,255)" : "rgb(255,255,255)",
+      goBack: () => this.setState(v === "asset" ? { assetState: "default" } : { colorState: "custom" }),
+      leftButton, rightButtons,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
