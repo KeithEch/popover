@@ -1,7 +1,7 @@
 # Figma to Claude pipeline test
 
 ## Overview
-Testing accuracy of inoutting a Figma design into Claude. This test was of a single modal popover, that appears over an app canvas and lets a user browse and manage library items. It has two versions sharing one shell:
+Testing the accuracy of importing a Figma design into Claude. This test was of a single modal popover, that appears over an app canvas and lets a user browse and manage library items. It has two versions sharing one shell:
 
 - **Asset version** — a scrollable list of image assets (thumbnail, filename, pixel dimensions, drag handle),
   with a filter/search field, row selection, and an upload state.
